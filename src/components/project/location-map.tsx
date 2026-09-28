@@ -25,7 +25,7 @@ export function LocationMap({
 
   return (
     <div className="grid gap-8 lg:grid-cols-5">
-      <div className="lg:col-span-3">
+      <div className={connectivity.length > 0 ? "lg:col-span-3" : "lg:col-span-5"}>
         <div className="aspect-[4/3] overflow-hidden rounded-xl border border-border sm:aspect-video">
           <iframe src={mapSrc} title="Project location map" className="size-full" loading="lazy" />
         </div>
@@ -45,25 +45,27 @@ export function LocationMap({
         </div>
       </div>
 
-      <div className="lg:col-span-2">
-        <h3 className="font-heading text-lg font-semibold">Connectivity</h3>
-        <ul className="mt-4 space-y-3">
-          {connectivity.map((item) => {
-            const Icon = categoryIcons[item.category];
-            return (
-              <li key={item.label} className="flex items-center justify-between gap-3 border-b border-border pb-3 text-sm">
-                <span className="flex items-center gap-2.5">
-                  <Icon className="size-4 shrink-0 text-accent-foreground" />
-                  {item.label}
-                </span>
-                <span className="shrink-0 font-medium text-muted-foreground">
-                  {item.distanceKm ? `${item.distanceKm} km` : item.timeMin ? `${item.timeMin} min` : ""}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      {connectivity.length > 0 && (
+        <div className="lg:col-span-2">
+          <h3 className="font-heading text-lg font-semibold">Connectivity</h3>
+          <ul className="mt-4 space-y-3">
+            {connectivity.map((item) => {
+              const Icon = categoryIcons[item.category];
+              return (
+                <li key={item.label} className="flex items-center justify-between gap-3 border-b border-border pb-3 text-sm">
+                  <span className="flex items-center gap-2.5">
+                    <Icon className="size-4 shrink-0 text-accent-foreground" />
+                    {item.label}
+                  </span>
+                  <span className="shrink-0 font-medium text-muted-foreground">
+                    {item.distanceKm ? `${item.distanceKm} km` : item.timeMin ? `${item.timeMin} min` : ""}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

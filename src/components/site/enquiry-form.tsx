@@ -1,16 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { trackEvent } from "@/lib/analytics";
 import { leadFormSchema, type LeadFormInput } from "@/lib/validation";
+
+const siteVisitSlots = [
+  { value: "morning", label: "Morning (9 AM – 12 PM)" },
+  { value: "afternoon", label: "Afternoon (12 – 4 PM)" },
+  { value: "evening", label: "Evening (4 – 7 PM)" },
+];
 
 export function EnquiryForm({
   projectSlug,
@@ -30,6 +37,7 @@ export function EnquiryForm({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<LeadFormInput>({
     resolver: zodResolver(leadFormSchema),
@@ -102,7 +110,24 @@ export function EnquiryForm({
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="preferredSlot">Preferred time</Label>
-            <Input id="preferredSlot" placeholder="e.g. Morning, 4–6 PM" {...register("preferredSlot")} />
+            <Controller
+              control={control}
+              name="preferredSlot"
+              render={({ field }) => (
+                <Select value={field.value || undefined} onValueChange={field.onChange}>
+                  <SelectTrigger id="preferredSlot" className="w-full">
+                    <SelectValue placeholder="Select a time slot" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {siteVisitSlots.map((slot) => (
+                      <SelectItem key={slot.value} value={slot.value}>
+                        {slot.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
         </div>
       )}
@@ -113,7 +138,7 @@ export function EnquiryForm({
       </div>
 
       <Button type="submit" className="w-full" disabled={submitting}>
-        {submitting ? "Submitting…" : showSiteVisitFields ? "Book Site Visit" : "Submit Enquiry"}
+        {submitting ? "Submitting…" : showSiteVisitFields ? "Book Free Site Visit" : "Submit Enquiry"}
       </Button>
     </form>
   );

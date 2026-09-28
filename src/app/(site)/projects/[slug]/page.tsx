@@ -16,7 +16,7 @@ import { SectionNav } from "@/components/project/section-nav";
 import { StickyEnquireBar } from "@/components/project/sticky-enquire-bar";
 import { ViewTracker } from "@/components/project/view-tracker";
 import { StatusPill } from "@/components/site/status-pill";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatPriceDisplay } from "@/lib/format";
 import { getAllProjectSlugs, getCompanyInfo, getProjectBySlug, getRelatedProjects } from "@/lib/data";
 
 export const revalidate = 60;
@@ -38,7 +38,11 @@ export async function generateMetadata({
   return {
     title: project.seo?.metaTitle || `${project.name} — ${project.locality}, ${project.city}`,
     description: project.seo?.metaDescription || project.tagline,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
     openGraph: {
+      url: `/projects/${project.slug}`,
       images: project.seo?.ogImage ? [project.seo.ogImage] : [project.heroImage],
     },
   };
@@ -87,7 +91,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               <Calendar className="size-4" /> Possession {formatDate(project.possessionDate)}
             </span>
             {project.reraNumber && <span>RERA: {project.reraNumber}</span>}
-            <span className="font-semibold text-white">Price on Quote</span>
+            <span className="font-semibold text-white">{formatPriceDisplay(project)}</span>
           </div>
         </div>
       </section>
@@ -165,11 +169,29 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           {/* Pricing */}
           <section id="pricing" className="scroll-mt-32 space-y-8">
             <h2 className="font-heading text-2xl font-bold">Pricing & Availability</h2>
-            <p className="text-sm text-muted-foreground">
-              Pricing depends on configuration, finishes and current material costs — enquire or book a
-              site visit for a detailed quote.
-            </p>
-            <PricingTable rows={project.pricingTable} />
+            {!project.priceConfirmed && (
+              <p className="text-sm text-muted-foreground">
+                Pricing depends on configuration, finishes and current material costs — enquire or book a
+                site visit for a detailed quote.
+              </p>
+            )}
+            {project.projectType === "apartment" ? (
+              // Apartments have genuinely distinct, separately-sold flat types — show each one's rate.
+              <PricingTable
+                rows={project.pricingTable}
+                priceConfirmed={project.priceConfirmed}
+                projectType={project.projectType}
+                perSqft={project.priceRange.perSqft}
+              />
+            ) : (
+              // A single house is bought as one property — don't itemize a per-floor amount,
+              // just point back to the overall price shown above.
+              project.priceConfirmed && (
+                <p className="text-sm text-muted-foreground">
+                  The price above is for the complete property, all floors included.
+                </p>
+              )
+            )}
             {project.constructionTimeline && (
               <div>
                 <h3 className="mb-4 font-heading text-lg font-semibold">Construction Status</h3>

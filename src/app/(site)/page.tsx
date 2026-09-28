@@ -16,6 +16,7 @@ export default async function HomePage() {
   ]);
 
   const heroProject = featured[0] ?? allProjects[0];
+  const soldProjects = allProjects.filter((p) => p.status === "sold");
 
   return (
     <>
@@ -46,6 +47,7 @@ export default async function HomePage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Button
               render={<Link href="/projects" />}
+              nativeButton={false}
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
@@ -74,20 +76,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured projects */}
-      {featured.length > 0 && (
+      {/* Sold homes */}
+      {soldProjects.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-sm font-medium uppercase tracking-wide text-accent">Featured</p>
-              <h2 className="mt-1 font-heading text-3xl font-bold">Flagship Projects</h2>
+              <p className="text-sm font-medium uppercase tracking-wide text-accent">Sold Out</p>
+              <h2 className="mt-1 font-heading text-3xl font-bold">Sold Homes</h2>
             </div>
-            <Link href="/projects" className="flex items-center gap-1 text-sm font-medium hover:underline">
-              View all projects <ArrowRight className="size-4" />
+            <Link href="/projects?status=sold" className="flex items-center gap-1 text-sm font-medium hover:underline">
+              View all sold homes <ArrowRight className="size-4" />
             </Link>
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((project) => (
+            {soldProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
@@ -109,7 +111,7 @@ export default async function HomePage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Button render={<Link href="/projects" />} size="lg" variant="outline">
+            <Button render={<Link href="/projects" />} nativeButton={false} size="lg" variant="outline">
               View All {allProjects.length} Projects <ArrowRight className="size-4" />
             </Button>
           </div>
@@ -123,7 +125,7 @@ export default async function HomePage() {
             <p className="text-sm font-medium uppercase tracking-wide text-accent">About {company.name}</p>
             <h2 className="mt-1 font-heading text-3xl font-bold">{company.aboutTitle}</h2>
             <p className="mt-4 text-muted-foreground">{company.aboutBody}</p>
-            <Button render={<Link href="/about" />} className="mt-6" variant="outline">
+            <Button render={<Link href="/about" />} nativeButton={false} className="mt-6" variant="outline">
               Learn more about us <ArrowRight className="size-4" />
             </Button>
           </div>
@@ -168,15 +170,15 @@ export default async function HomePage() {
           <MapPin className="size-8" />
           <h2 className="max-w-xl font-heading text-3xl font-bold">Find the right home, in the right location</h2>
           <p className="max-w-lg text-accent-foreground/80">
-            Book a site visit or speak with our sales team — we&apos;ll help you shortlist the project that fits your budget and city.
+            Book a free site visit or speak with our sales team — we&apos;ll help you shortlist the project that fits your budget and city.
           </p>
           <EnquiryDialog
             source="site-visit"
             showSiteVisitFields
-            title="Book a Site Visit"
+            title="Book a Free Site Visit"
             trigger={
               <Button size="lg" variant="secondary">
-                Book a Site Visit
+                Book a Free Site Visit
               </Button>
             }
           />

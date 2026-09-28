@@ -1,8 +1,18 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatSqft } from "@/lib/format";
+import { formatRowPrice } from "@/lib/format";
 import type { PricingRow } from "@/types/project";
 
-export function PricingTable({ rows }: { rows: PricingRow[] }) {
+export function PricingTable({
+  rows,
+  priceConfirmed,
+  projectType,
+  perSqft,
+}: {
+  rows: PricingRow[];
+  priceConfirmed?: boolean;
+  projectType?: string;
+  perSqft?: number;
+}) {
   if (rows.length === 0) return null;
 
   return (
@@ -11,16 +21,20 @@ export function PricingTable({ rows }: { rows: PricingRow[] }) {
         <TableHeader>
           <TableRow>
             <TableHead>Configuration</TableHead>
-            <TableHead>Carpet Area</TableHead>
-            <TableHead className="text-right">Price</TableHead>
+            <TableHead className="text-right">{projectType === "apartment" ? "Rate" : "Price"}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.config}>
               <TableCell className="font-medium">{row.config}</TableCell>
-              <TableCell>{formatSqft(row.carpetAreaSqft)}</TableCell>
-              <TableCell className="text-right text-muted-foreground">On Quote</TableCell>
+              <TableCell className="text-right">
+                {priceConfirmed ? (
+                  formatRowPrice(row, projectType, perSqft)
+                ) : (
+                  <span className="text-muted-foreground">On Quote</span>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

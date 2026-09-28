@@ -4,7 +4,21 @@ import { NextResponse, type NextRequest } from "next/server";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// The site's original free Vercel subdomain — now permanently redirected to
+// the real custom domain so bookmarks/shares/search listings consolidate
+// onto one URL instead of splitting SEO signal across two addresses.
+const OLD_HOST = "sri-balaji-constructions.vercel.app";
+const NEW_HOST = "sribalajiconstructionsbuildersanddevelopers.com";
+
 export async function middleware(request: NextRequest) {
+  if (request.headers.get("host") === OLD_HOST) {
+    const redirectUrl = new URL(request.url);
+    redirectUrl.protocol = "https:";
+    redirectUrl.host = NEW_HOST;
+    redirectUrl.port = "";
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
   const response = NextResponse.next({ request });
 
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
@@ -44,5 +58,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  // Broad enough to catch the old-host redirect on every page, while still
+  // skipping static assets/images for performance.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

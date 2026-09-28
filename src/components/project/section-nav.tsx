@@ -36,7 +36,7 @@ export function SectionNav() {
   }, []);
 
   return (
-    <nav className="sticky top-16 z-30 -mx-4 overflow-x-auto border-b border-border bg-background/95 px-4 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <nav className="sticky top-20 z-30 -mx-4 overflow-x-auto border-b border-border bg-background/95 px-4 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div className="mx-auto flex max-w-7xl gap-6 py-3">
         {sections.map((s) => (
           <a

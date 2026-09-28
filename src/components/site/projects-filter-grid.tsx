@@ -20,6 +20,7 @@ const statusOptions = [
   { value: "under-construction", label: "Under Construction" },
   { value: "ready-to-move", label: "Ready to Move" },
   { value: "completed", label: "Completed" },
+  { value: "sold", label: "Sold" },
 ];
 
 const typeOptions = [

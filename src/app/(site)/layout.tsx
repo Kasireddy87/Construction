@@ -1,3 +1,4 @@
+import { CurtainIntro } from "@/components/site/curtain-intro";
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
@@ -8,6 +9,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <CurtainIntro />
       <Header company={company} />
       <main className="flex-1">{children}</main>
       <Footer company={company} />

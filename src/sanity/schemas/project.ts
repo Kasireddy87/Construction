@@ -104,6 +104,7 @@ export const project = defineType({
           { title: "Under Construction", value: "under-construction" },
           { title: "Ready to Move", value: "ready-to-move" },
           { title: "Completed", value: "completed" },
+          { title: "Sold", value: "sold" },
         ],
         layout: "radio",
       },

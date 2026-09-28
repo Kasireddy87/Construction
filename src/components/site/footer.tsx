@@ -39,9 +39,6 @@ export function Footer({ company }: { company: CompanyInfo }) {
               <Link href="/contact" className="hover:text-primary-foreground">
                 Contact
               </Link>
-              <Link href="/legal/rera" className="hover:text-primary-foreground">
-                RERA Disclosures
-              </Link>
             </nav>
           </div>
 

@@ -7,6 +7,7 @@ import { BrochureButton } from "@/components/project/brochure-button";
 import { EnquiryDialog } from "@/components/site/enquiry-dialog";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { trackEvent } from "@/lib/analytics";
+import { formatPriceDisplay } from "@/lib/format";
 import type { Project } from "@/types/project";
 
 export function StickyEnquireBar({ project, phoneDigits }: { project: Project; phoneDigits: string }) {
@@ -14,10 +15,10 @@ export function StickyEnquireBar({ project, phoneDigits }: { project: Project; p
     <>
       {/* Desktop sidebar card */}
       <aside className="hidden lg:block">
-        <div className="sticky top-32 space-y-4 rounded-xl border border-border bg-card p-6">
+        <div className="sticky top-36 space-y-4 rounded-xl border border-border bg-card p-6">
           <div>
             <p className="text-xs text-muted-foreground">Pricing</p>
-            <p className="font-heading text-2xl font-bold">Price on Quote</p>
+            <p className="font-heading text-2xl font-bold">{formatPriceDisplay(project)}</p>
           </div>
           <div className="space-y-2">
             <EnquiryDialog
@@ -29,10 +30,10 @@ export function StickyEnquireBar({ project, phoneDigits }: { project: Project; p
               trigger={
                 <Button variant="outline" className="w-full">
                   <Calendar className="size-4" />
-                  Book Site Visit
+                  Book Free Site Visit
                 </Button>
               }
-              title="Book a Site Visit"
+              title="Book a Free Site Visit"
               source="site-visit"
               showSiteVisitFields
               projectSlug={project.slug}

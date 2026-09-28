@@ -8,6 +8,7 @@ const styles: Record<ProjectStatus, string> = {
   "under-construction": "bg-primary text-primary-foreground border-transparent",
   "ready-to-move": "bg-emerald-600 text-white border-transparent",
   completed: "bg-secondary text-secondary-foreground border-border",
+  sold: "bg-rose-600 text-white border-transparent",
 };
 
 export function StatusPill({ status, className }: { status: ProjectStatus; className?: string }) {

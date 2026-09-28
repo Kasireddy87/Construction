@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 
 import { StatusPill } from "@/components/site/status-pill";
+import { formatPriceDisplay } from "@/lib/format";
 import type { Project } from "@/types/project";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -32,7 +33,7 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.locality}, {project.city}
         </p>
         <p className="text-sm text-muted-foreground">{configs}</p>
-        <p className="pt-1 text-sm font-medium">Price on Quote</p>
+        <p className="pt-1 text-sm font-medium">{formatPriceDisplay(project)}</p>
       </div>
     </Link>
   );

@@ -6,7 +6,9 @@ import { ZoomIn } from "lucide-react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-/** Click any image to open a full-screen zoomable view. */
+/** Click any image to open a large, full-height zoomable view — sized to the image's
+ * own aspect ratio (not forced into a landscape box), so tall floor plans render
+ * as large as the viewport allows instead of being letterboxed down. */
 export function Lightbox({
   src,
   alt,
@@ -33,11 +35,14 @@ export function Lightbox({
         </span>
       </button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-5xl border-none bg-transparent p-0 shadow-none [&>button]:text-white">
+        <DialogContent className="flex max-h-[95vh] w-fit max-w-[95vw] items-center justify-center border-none bg-transparent p-0 shadow-none [&>button]:z-10 [&>button]:text-white">
           <DialogTitle className="sr-only">{alt}</DialogTitle>
-          <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
-            <Image src={src} alt={alt} fill sizes="90vw" className="rounded-lg object-contain" />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element -- natural aspect ratio needed; next/image `fill` would force a fixed box and shrink tall plans */}
+          <img
+            src={src}
+            alt={alt}
+            className="max-h-[95vh] max-w-[95vw] rounded-lg object-contain"
+          />
         </DialogContent>
       </Dialog>
     </>

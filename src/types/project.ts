@@ -7,7 +7,8 @@ export type ProjectStatus =
   | "new-launch"
   | "under-construction"
   | "ready-to-move"
-  | "completed";
+  | "completed"
+  | "sold";
 
 export type ProjectType = "apartment" | "villa" | "plot" | "commercial";
 
@@ -104,7 +105,11 @@ export interface Project {
   sitePlanImage?: string;
   amenities: Amenity[];
   connectivity: ConnectivityItem[];
-  priceRange: { min: number; max: number; perSqft?: number };
+  priceRange: { min: number; max: number; perSqft?: number; negotiable?: boolean };
+  // Whether priceRange is a real, disclosed price to show on the site.
+  // When false/absent, the UI shows "Price on Quote" instead of the number
+  // (priceRange is still used internally for the /projects budget filter).
+  priceConfirmed?: boolean;
   pricingTable: PricingRow[];
   constructionTimeline?: { label: string; date: string; complete: boolean }[];
   brochureUrl?: string;

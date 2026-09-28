@@ -30,57 +30,55 @@ export function PlanTabs({ configs, projectSlug }: { configs: UnitPlan[]; projec
       </TabsList>
 
       {configs.map((c) => (
-        <TabsContent key={c.configLabel} value={c.configLabel} className="mt-6">
-          <div className="grid gap-8 md:grid-cols-2">
-            <Lightbox src={c.planImage} alt={`${c.configLabel} floor plan`} aspect="aspect-[4/5]" imgClassName="object-contain bg-muted" />
-            <div className="space-y-4">
-              <dl className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <dt className="text-muted-foreground">Carpet Area</dt>
-                  <dd className="font-medium">{formatSqft(c.carpetAreaSqft)}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">Built-up Area</dt>
-                  <dd className="font-medium">{formatSqft(c.builtUpAreaSqft)}</dd>
-                </div>
-                {c.facing && (
-                  <div>
-                    <dt className="text-muted-foreground">Facing</dt>
-                    <dd className="font-medium">{c.facing}</dd>
-                  </div>
-                )}
-                {c.towerInfo && (
-                  <div>
-                    <dt className="text-muted-foreground">Available In</dt>
-                    <dd className="font-medium">{c.towerInfo}</dd>
-                  </div>
-                )}
-              </dl>
+        <TabsContent key={c.configLabel} value={c.configLabel} className="mt-6 space-y-6">
+          {/* Full-width, tall preview so the plan is legible before you even zoom in */}
+          <Lightbox
+            src={c.planImage}
+            alt={`${c.configLabel} floor plan`}
+            aspect="aspect-[3/4] sm:aspect-[16/10]"
+            imgClassName="object-contain bg-muted"
+          />
+          <p className="-mt-3 text-xs text-muted-foreground">Click the plan to view it larger / zoom in.</p>
 
-              {c.variants && c.variants.length > 0 && (
-                <div className="overflow-hidden rounded-lg border border-border">
-                  <table className="w-full text-sm">
-                    <thead className="bg-muted text-muted-foreground">
-                      <tr>
-                        <th className="px-3 py-2 text-left font-medium">Variant</th>
-                        <th className="px-3 py-2 text-left font-medium">Carpet</th>
-                        <th className="px-3 py-2 text-left font-medium">Built-up</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {c.variants.map((v) => (
-                        <tr key={v.label} className="border-t border-border">
-                          <td className="px-3 py-2">{v.label}</td>
-                          <td className="px-3 py-2">{formatSqft(v.carpetAreaSqft)}</td>
-                          <td className="px-3 py-2">{formatSqft(v.builtUpAreaSqft)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+          <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
+            <div>
+              <dt className="text-muted-foreground">Area</dt>
+              <dd className="font-medium">{formatSqft(c.builtUpAreaSqft)}</dd>
             </div>
-          </div>
+            {c.facing && (
+              <div>
+                <dt className="text-muted-foreground">Facing</dt>
+                <dd className="font-medium">{c.facing}</dd>
+              </div>
+            )}
+            {c.towerInfo && (
+              <div className="col-span-2 sm:col-span-4">
+                <dt className="text-muted-foreground">Available In</dt>
+                <dd className="font-medium">{c.towerInfo}</dd>
+              </div>
+            )}
+          </dl>
+
+          {c.variants && c.variants.length > 0 && (
+            <div className="overflow-hidden rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead className="bg-muted text-muted-foreground">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-medium">Variant</th>
+                    <th className="px-3 py-2 text-left font-medium">Area</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {c.variants.map((v) => (
+                    <tr key={v.label} className="border-t border-border">
+                      <td className="px-3 py-2">{v.label}</td>
+                      <td className="px-3 py-2">{formatSqft(v.builtUpAreaSqft)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </TabsContent>
       ))}
     </Tabs>
