@@ -2,15 +2,15 @@
 
 import { useMemo, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Lightbox } from "@/components/project/lightbox";
 import { formatDate } from "@/lib/format";
 import type { GalleryCategory, GalleryImage } from "@/types/project";
 
 const categoryLabels: Record<GalleryCategory, string> = {
-  elevation: "Elevation",
+  elevation: "Outside",
   amenity: "Amenities",
-  interior: "Interiors",
+  interior: "Inside",
   "construction-progress": "Construction Progress",
 };
 
@@ -55,30 +55,32 @@ export function Gallery({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant={filter === "all" ? "default" : "outline"} onClick={() => setFilter("all")}>
-          All
-        </Button>
-        {categories.map((c) => (
-          <Button key={c} size="sm" variant={filter === c ? "default" : "outline"} onClick={() => setFilter(c)}>
-            {categoryLabels[c]}
-          </Button>
-        ))}
-      </div>
+      <Tabs value={filter} onValueChange={(v) => setFilter(v as GalleryCategory | "all")}>
+        <TabsList className="flex-wrap">
+          <TabsTrigger value="all">All</TabsTrigger>
+          {categories.map((c) => (
+            <TabsTrigger key={c} value={c}>
+              {categoryLabels[c]}
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {filtered.map((image, i) => (
-          <div key={i} className="space-y-1.5">
-            <Lightbox src={image.url} alt={image.caption ?? categoryLabels[image.category]} />
-            {image.caption && (
-              <p className="text-xs text-muted-foreground">
-                {image.caption}
-                {image.date ? ` · ${formatDate(image.date)}` : ""}
-              </p>
-            )}
+        <TabsContent value={filter} className="mt-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {filtered.map((image, i) => (
+              <div key={i} className="space-y-1.5">
+                <Lightbox src={image.url} alt={image.caption ?? categoryLabels[image.category]} />
+                {image.caption && (
+                  <p className="text-xs text-muted-foreground">
+                    {image.caption}
+                    {image.date ? ` · ${formatDate(image.date)}` : ""}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
