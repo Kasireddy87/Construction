@@ -75,8 +75,8 @@ export function CurtainIntro() {
         style={{ transition: `opacity ${OPEN_DURATION_MS * 0.6}ms ease-out`, opacity: open ? 0 : 1 }}
       >
         <div className="flex flex-col items-center gap-4">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static local SVG, no optimization needed */}
-          <img src="/logo-mark.svg" alt="" className="h-16 w-auto brightness-0 invert" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- static local logo, no optimization needed */}
+          <img src="/logo-mark.png" alt="" className="h-16 w-auto brightness-0 invert" />
           <p className="text-xs font-semibold tracking-[0.35em] text-white/70">
             SRI BALAJI CONSTRUCTIONS
           </p>

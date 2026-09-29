@@ -26,9 +26,12 @@ export function Header({ company }: { company: CompanyInfo }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static local SVG, no optimization needed */}
-          <img src="/logo.svg" alt={company.name} className="h-12 w-auto sm:h-14" />
+        <Link href="/" className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static local logo, no optimization needed */}
+          <img src="/logo-mark.png" alt="" className="h-12 w-auto sm:h-14" />
+          <span className="hidden font-heading text-lg font-bold leading-tight text-primary sm:inline-block">
+            {company.name}
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

@@ -10,7 +10,11 @@ export function Footer({ company }: { company: CompanyInfo }) {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="space-y-3">
-            <p className="font-heading text-lg font-bold">{company.name}</p>
+            <div className="flex items-center gap-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element -- static local logo, no optimization needed */}
+              <img src="/logo-mark.png" alt="" className="h-8 w-auto brightness-0 invert" />
+              <p className="font-heading text-lg font-bold">{company.name}</p>
+            </div>
             <p className="text-sm text-primary-foreground/70">{company.aboutTitle}</p>
             <div className="flex gap-3 pt-1">
               {company.socials.map((s) => (
