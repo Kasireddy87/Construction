@@ -76,26 +76,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sold homes */}
-      {soldProjects.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-wide text-accent">Sold Out</p>
-              <h2 className="mt-1 font-heading text-3xl font-bold">Sold Homes</h2>
-            </div>
-            <Link href="/projects?status=sold" className="flex items-center gap-1 text-sm font-medium hover:underline">
-              View all sold homes <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {soldProjects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* All projects preview */}
       <section className="bg-secondary/40 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -117,6 +97,26 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Sold homes */}
+      {soldProjects.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-wide text-accent">Sold Out</p>
+              <h2 className="mt-1 font-heading text-3xl font-bold">Sold Homes</h2>
+            </div>
+            <Link href="/projects?status=sold" className="flex items-center gap-1 text-sm font-medium hover:underline">
+              View all sold homes <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {soldProjects.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* About teaser */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
