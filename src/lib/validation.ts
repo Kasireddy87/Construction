@@ -41,6 +41,7 @@ export const analyticsEventEnum = z.enum([
   "project_view",
   "brochure_click",
   "whatsapp_click",
+  "instagram_click",
   "call_click",
   "plan_view",
   "enquiry_submit",

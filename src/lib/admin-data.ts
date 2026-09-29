@@ -69,6 +69,7 @@ export interface AnalyticsSummary {
   newLeadsLast7Days: number;
   brochureDownloads: number;
   whatsappClicks: number;
+  instagramClicks: number;
   callClicks: number;
   byProject: { project_slug: string; views: number; enquiries: number }[];
 }
@@ -86,6 +87,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
   const rows = events.data ?? [];
   const brochureDownloads = rows.filter((r) => r.event === "brochure_click").length;
   const whatsappClicks = rows.filter((r) => r.event === "whatsapp_click").length;
+  const instagramClicks = rows.filter((r) => r.event === "instagram_click").length;
   const callClicks = rows.filter((r) => r.event === "call_click").length;
 
   const byProjectMap = new Map<string, { views: number; enquiries: number }>();
@@ -102,6 +104,7 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
     newLeadsLast7Days: newLeadsLast7Days ?? 0,
     brochureDownloads,
     whatsappClicks,
+    instagramClicks,
     callClicks,
     byProject: Array.from(byProjectMap.entries()).map(([project_slug, v]) => ({ project_slug, ...v })),
   };

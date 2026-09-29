@@ -14,11 +14,12 @@ export default async function AdminOverviewPage() {
         <p className="mt-1 text-sm text-muted-foreground">Last 7 days of activity across all projects.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         <StatCard label="Total Leads" value={summary.totalLeads} />
         <StatCard label="New Leads (7d)" value={summary.newLeadsLast7Days} />
         <StatCard label="Brochure Downloads" value={summary.brochureDownloads} />
         <StatCard label="WhatsApp Clicks" value={summary.whatsappClicks} />
+        <StatCard label="Instagram Clicks" value={summary.instagramClicks} />
         <StatCard label="Call Clicks" value={summary.callClicks} />
       </div>
 
