@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 import { NextRequest, NextResponse } from "next/server";
 
 import { notifySalesOfLead } from "@/lib/email";
@@ -31,21 +33,26 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { data: inserted, error } = await supabaseAnon
-    .from("leads")
-    .insert({
-      name: data.name,
-      phone: data.phone,
-      email: data.email || null,
-      project_slug: data.projectSlug || null,
-      source: data.source,
-      message: data.message || null,
-      utm_source: data.utmSource || null,
-      utm_medium: data.utmMedium || null,
-      utm_campaign: data.utmCampaign || null,
-    })
-    .select("id")
-    .single();
+  // Generate the id ourselves rather than reading it back via `.select()`.
+  // The anon role can only INSERT on `leads` (never SELECT, to keep other
+  // visitors' contact details private), and under RLS a `RETURNING`-style
+  // read-back is blocked by the same policy that protects direct reads —
+  // Postgres then reports the whole insert as an RLS violation even though
+  // the insert itself would have succeeded.
+  const id = randomUUID();
+
+  const { error } = await supabaseAnon.from("leads").insert({
+    id,
+    name: data.name,
+    phone: data.phone,
+    email: data.email || null,
+    project_slug: data.projectSlug || null,
+    source: data.source,
+    message: data.message || null,
+    utm_source: data.utmSource || null,
+    utm_medium: data.utmMedium || null,
+    utm_campaign: data.utmCampaign || null,
+  });
 
   if (error) {
     console.error("[api/leads] insert failed:", error);
@@ -54,7 +61,7 @@ export async function POST(req: NextRequest) {
 
   if (data.source === "site-visit" && (data.preferredDate || data.preferredSlot)) {
     const { error: visitError } = await supabaseAnon.from("site_visits").insert({
-      lead_id: inserted.id,
+      lead_id: id,
       preferred_date: data.preferredDate || null,
       preferred_slot: data.preferredSlot || null,
     });
@@ -70,5 +77,5 @@ export async function POST(req: NextRequest) {
     message: data.message || undefined,
   }).catch((err) => console.error("[api/leads] email notification failed:", err));
 
-  return NextResponse.json({ ok: true, id: inserted.id });
+  return NextResponse.json({ ok: true, id });
 }
